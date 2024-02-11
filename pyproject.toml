@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "pypolygon"
+version = "0.1.0"
+description = "Python library to interface with trading API service Polygon.io"
+authors = ["Simone Sturniolo <simonesturniolo@gmail.com>"]
+license = "GPLv3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
