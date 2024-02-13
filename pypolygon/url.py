@@ -1,5 +1,6 @@
 from typing import Any, List
 from string import Formatter
+from pypolygon.utils import urlparam_to_arg, arg_to_urlparam
 
 class APIUrl:
     
@@ -14,7 +15,7 @@ class APIUrl:
         self._params = []
         for _, param, _, _ in Formatter().parse(url_fmt):
             if param is not None:
-                self._params.append(param)
+                self._params.append(urlparam_to_arg(param))
     
     @property
     def fmt(self) -> str:
@@ -36,4 +37,4 @@ class APIUrl:
         for i, a in enumerate(args):
             kwds[self._params[i]] = a
             
-        return self._fmt.format(**kwds)
+        return self._fmt.format(**{arg_to_urlparam(k): v for k, v in kwds.items()})
