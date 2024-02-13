@@ -26,7 +26,7 @@ class PolygonEndpoint(ABC, Generic[ResponseType]):
         self._url = url
         self._query_params = set(query_params)
         self._response_model = resposnse_model
-        
+
     def _execute(self, **kwargs: Any) -> ResponseType:
 
         # Select the query parameters
@@ -45,9 +45,9 @@ class PolygonEndpoint(ABC, Generic[ResponseType]):
         headers = {"Accept": "application/json", "Content-Type": "application/json"}
         response = requests.get(url, params=query_params, headers=headers)
         rjson = response.json()
-        
+
         return self._response_model.model_validate(rjson)
-    
+
     @abstractmethod
     def __call__(self, *args: Any, **kwds: Any) -> ResponseType:
         return self._execute(*args, **kwds)

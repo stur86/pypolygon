@@ -1,5 +1,6 @@
 """Utility functions for the pypolygon package."""
 
+
 def snake_to_camel(s: str) -> str:
     """Convert a snake_case string to a camelCase string.
 
@@ -10,8 +11,9 @@ def snake_to_camel(s: str) -> str:
         str: The camelCase string.
     """
 
-    tokens = s.split('_')
-    return tokens[0] + ''.join(token.title() for token in tokens[1:])
+    tokens = s.split("_")
+    return tokens[0] + "".join(token.title() for token in tokens[1:])
+
 
 def camel_to_snake(s: str) -> str:
     """Convert a camelCase string to a snake_case string.
@@ -23,7 +25,8 @@ def camel_to_snake(s: str) -> str:
         str: The snake_case string.
     """
 
-    return ''.join(['_' + c.lower() if c.isupper() else c for c in s]).lstrip('_')
+    return "".join(["_" + c.lower() if c.isupper() else c for c in s]).lstrip("_")
+
 
 def arg_to_urlparam(s: str) -> str:
     """Convert an input argument name to a URL parameter name.
@@ -36,7 +39,7 @@ def arg_to_urlparam(s: str) -> str:
     Returns:
         str: The URL parameter name.
     """
-    
+
     # Special exception for keywords "from" and "to" since
     # "from" is a reserved keyword in Python
     if s == "range_from":
@@ -44,6 +47,7 @@ def arg_to_urlparam(s: str) -> str:
     if s == "range_to":
         return "to"
     return snake_to_camel(s)
+
 
 def urlparam_to_arg(s: str) -> str:
     """Convert a URL parameter name to an input argument name.
@@ -56,7 +60,7 @@ def urlparam_to_arg(s: str) -> str:
     Returns:
         str: The input argument name.
     """
-    
+
     # Special exception for keywords "from" and "to" since
     # "from" is a reserved keyword in Python
     s = camel_to_snake(s)
