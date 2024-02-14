@@ -45,10 +45,12 @@ class PolygonEndpoint(ABC, Generic[ResponseType]):
         headers = {"Accept": "application/json", "Content-Type": "application/json"}
         response = requests.get(url, params=query_params, headers=headers)
         rjson = response.json()
-        
+
         if rjson.get("status") != "OK":
-            raise ValueError(f"API request failed: {rjson.get('message', 'Unknown error')}")
-        
+            msg = rjson.get("message", None)
+            msg = msg or rjson.get("error", "Unknown error")
+            raise ValueError(f"API request failed: {msg}")
+
         return self._response_model.model_validate(rjson)
 
     @abstractmethod

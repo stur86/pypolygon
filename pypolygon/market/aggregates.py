@@ -45,5 +45,5 @@ if __name__ == "__main__":
         range_from="2024-01-01",
         range_to="2024-01-05",
     )
-    
+
     print(ans)

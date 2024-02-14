@@ -2,12 +2,11 @@ from pypolygon.endpoint import PolygonEndpoint
 from pypolygon.url import APIUrl
 from pypolygon.models.market import GroupedDailyResponse
 
+
 class GroupedDailyEndpoint(PolygonEndpoint[GroupedDailyResponse]):
 
     def __init__(self) -> None:
-        url = APIUrl(
-            "/v2/aggs/grouped/locale/us/market/stocks/{date}"
-        )
+        url = APIUrl("/v2/aggs/grouped/locale/us/market/stocks/{date}")
         query_params = ["adjusted", "include_otc"]
         super().__init__(url, query_params, GroupedDailyResponse)
 
@@ -31,5 +30,5 @@ if __name__ == "__main__":
     ans = endpoint(
         date="2024-02-13",
     )
-    
+
     print(ans)
