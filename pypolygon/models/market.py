@@ -5,13 +5,13 @@ class TickerResult(BaseModel):
     c: float = Field(..., description="Close price")
     h: float = Field(..., description="Highest price")
     l: float = Field(..., description="Lowest price")  # noqa: E741
-    n: int = Field(..., description="Number of transactions")
     o: float = Field(..., description="Open price")
     t: int = Field(..., description="Unix Msec Timestamp")
-    v: int = Field(..., description="Trading volume")
-    vw: float = Field(..., description="Volume weighted average price")
+    v: float = Field(..., description="Trading volume")
+    n: Optional[int] = Field(None, description="Number of transactions")
+    vw: Optional[float] = Field(None, description="Volume weighted average price")
     otc: Optional[bool] = Field(None, description="Over the counter")
-    ticker: Optional[str] = Field(None, description="Ticker name")
+    T: Optional[str] = Field(None, description="Ticker name")
     
     
     @classmethod
@@ -20,22 +20,31 @@ class TickerResult(BaseModel):
         data = sorted(data, key=lambda x: x.t)
         
         otc_0 = data[0].otc
-        ticker_0 = data[0].ticker
+        ticker_0 = data[0].T
         
         if not all([x.otc == otc_0 for x in data]):
             raise ValueError("OTC mismatch")
 
-        if not all([x.ticker == ticker_0 for x in data]):
+        if not all([x.T == ticker_0 for x in data]):
             raise ValueError("Ticker mismatch")
         
         o_tot = data[0].o
         c_tot = data[-1].c
-        n_tot = sum([x.n for x in data])
         v_tot = sum([x.v for x in data])
         h_tot = max([x.h for x in data])
         l_tot = min([x.l for x in data])
         t_tot = data[0].t
-        vw_tot = sum([x.vw*x.v for x in data]) / v_tot
+        
+        # n and vw are optional
+        if any([x.n is None for x in data]):
+            n_tot = None
+        else:  
+            n_tot = sum([x.n for x in data])
+
+        if any([x.vw is None for x in data]):
+            vw_tot = None
+        else:
+            vw_tot = sum([x.vw*x.v for x in data]) / v_tot
         
         return cls(
             o=o_tot,
@@ -47,14 +56,20 @@ class TickerResult(BaseModel):
             v=v_tot,
             vw=vw_tot,
             otc=otc_0,
-            ticker=ticker_0
+            T=ticker_0
         )
-        
-class AggregatesResponse(BaseModel):
+
+class BaseAggregatesResponse(BaseModel):
     adjusted: bool
     queryCount: int
     request_id: str
-    results: List[TickerResult]
     resultsCount: int
-    status: str
+    status: str        
+
+        
+class AggregatesResponse(BaseAggregatesResponse):
     ticker: str
+    results: List[TickerResult]
+
+class GroupedDailyResponse(BaseAggregatesResponse):
+    results: List[TickerResult]

@@ -21,7 +21,7 @@ def test_endpoint(requests_mock, monkeypatch):
         endpoint = TestEndpoint()        
         monkeypatch.setenv("POLYGON_API_KEY", "TESTKEY")
         
-        requests_mock.get(f"{_BASE_URL}/v2/test/test1/test2?name=test3&apiKey=TESTKEY", json={"msg": "test"})
+        requests_mock.get(f"{_BASE_URL}/v2/test/test1/test2?name=test3&apiKey=TESTKEY", json={"msg": "test", "status": "OK"})
             
         ans = endpoint(first_param="test1", second_param="test2", name="test3")
                         

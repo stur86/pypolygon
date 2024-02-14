@@ -14,7 +14,7 @@ def test_tickers():
         v=1000,
         vw=1,
         otc=True,
-        ticker="AAPL"
+        T="AAPL"
     )
     
     t2 = TickerResult(
@@ -27,7 +27,7 @@ def test_tickers():
         v=1000,
         vw=2,
         otc=True,
-        ticker="AAPL"
+        T="AAPL"
     )
     
     tsum = TickerResult.aggregate([t1, t2])
@@ -41,10 +41,10 @@ def test_tickers():
     assert tsum.v == 2000
     assert tsum.vw == 1.5
     assert tsum.otc
-    assert tsum.ticker == "AAPL"
+    assert tsum.T == "AAPL"
     
     # Try with different tickers
-    t2.ticker = "TSLA"
+    t2.T = "TSLA"
     
     with pytest.raises(ValueError):
         TickerResult.aggregate([t1, t2])
